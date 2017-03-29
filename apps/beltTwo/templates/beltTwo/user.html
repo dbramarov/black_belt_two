@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Info</title>
+</head>
+<body>
+<a href="{% url 'login:logout'%}">Logout</a>
+<a href="{%url 'black:my_index'%}">Dashboard</a>
+<h1>Posts by {{user.name}}:</h1>
+{% for c in count %}
+<h2>Count {{c.num_quotes}}:</h2>
+{% endfor %}
+
+{% for quote in quotes %}
+<p>{{quote.by}}: {{quote.quote}}</p>
+<hr>
+{% endfor %}
+</body>
+</html>

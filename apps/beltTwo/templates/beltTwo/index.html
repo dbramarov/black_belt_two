@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quotes</title>
+</head>
+<body>
+<a href="{% url 'login:logout'%}">Logout</a>
+<h1>Welcome, {{user.name}}!</h1>
+
+	{% if messages %}
+    {% for message in messages %}
+    <p style="color: red;">{{message}}</p>
+    {% endfor %}
+    {% endif %}
+
+<div style="display: inline-block;vertical-align: top; border: 2px solid black; padding: 15px;" class="left">
+	<h2>Quotable Quotes</h2>
+		{% for quote in quotes %}
+		<p>{{quote.by}}: {{quote.quote}}</p>
+		<p>Posted by: <a href="{% url 'black:user' quote.user.id %}">{{quote.user.name}}</a></p>
+		<form action="{% url 'black:fav' quote.id %}" method="post">
+		{% csrf_token %}
+			<input type="submit" name="submit" value="Add to My List">
+		</form>
+		<hr>
+		{% endfor %}
+</div>
+<div style="display: inline-block;vertical-align: top; margin-left: 30px; border: 2px solid black; padding: 15px;" class="right">
+	<h2>Your Favorites</h2>
+		{% for fav in favs %}
+		<p>{{fav.quotes.by}}: {{fav.quotes.quote}}</p>
+		<p>Posted by: <a href="{% url 'black:user' fav.quotes.user.id %}">{{fav.quotes.user.name}}</a></p>
+		<form action="{% url 'black:delete' fav.id %}" method="post">
+		{% csrf_token %}
+			<input type="submit" name="submit" value="Remove from My List">
+		</form>
+		<hr>
+		{% endfor %}
+
+	<h2>Contribute a Quote:</h2>
+
+	<form action="{% url 'black:create' %}" method="post">
+		{% csrf_token %}
+		<p>Quoted By: <input type="text" name="quotedBy"></p>
+		<p>Message: <textarea rows="5" cols="50" name="message"></textarea></p>
+		<input type="submit" name="submit" value="Submit">
+	</form>
+
+</div>
+</body>
+</html>
